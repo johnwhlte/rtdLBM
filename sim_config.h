@@ -25,24 +25,27 @@ typedef BGKdynamics<T,DESCRIPTOR> BulkDynamics;
 #endif
 
 //Physical Settings
-const T tau = 0.53;
-const T nuP = 0.02; // Physical Nu
-const T nuL = (tau - nuP) / 3; // Lattice Nu (LU)
+const T tau = 0.52;
 const T rhoP = 998.2; // Physical Density (kg/m3)
+const T muP = 0.02;
+const T nuP = muP / rhoP; // Physical Nu
+const T nuL = (tau - nuP) / 3; // Lattice Nu (LU)
+
 
 // Sim Resolution Determination
-int N = 20;                         
+const int N = 20;                         
 const T charMinL =0.005; // m       
 const T deltaX = charMinL / N; // LU 
 const T deltaT = (nuL * deltaX * deltaX) / nuP; // s
+const T maxAllowableLatticeVel = 0.5;
 
 // Sim Time Settings
 const T fluidMaxPhysT = T( 5 );     // max. fluid simulation time in s, SI unit
 const T particleMaxPhysT = T( 20 ); // max. particle simulation time in s, SI unit  
 
 // Average Velocity Determination
-const T flowRate = 2. * 1.0e-6; // mL/s
-const T radInlet = 0.005; // m
+const T flowRate = 2. * 1.0e-4; // m3/s
+const T radInlet = 0.0025; // m
 const T avgVel = flowRate / (M_PI * radInlet* radInlet); // m/s
 const T avgLVel = (avgVel*deltaT) / deltaX; // LU
 
@@ -50,6 +53,7 @@ const T avgLVel = (avgVel*deltaT) / deltaX; // LU
 std::size_t noOfParticles = 10000;   // total number of inserted particles   
 const T radius = 1.5e-4;            // particles radius
 const T partRho = 998.2; 
+const T particleInjectionX = 0.001;
 
 //Set capture method:
 // materialCapture: based on material number
@@ -68,5 +72,6 @@ Vector<T, 3> outletNormal( T(1), T(0), T(0) );
 
 //writing data constants
 char vtkFileName[] = "rtdVal";
+char vtkParticleFileName[] = "particle";
 const T physVTKiter = 0.1;
 const T physStatiter = 0.01;
