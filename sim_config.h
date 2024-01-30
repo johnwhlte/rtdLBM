@@ -4,7 +4,8 @@
 using namespace olb;
 using namespace olb::descriptors;
 using namespace olb::graphics;
-using namespace olb::util;
+using olb::util::Randomizer;
+using olb::util::Timer;
 using namespace particles;
 using namespace particles::subgrid;
 using namespace particles::communication;
@@ -24,13 +25,13 @@ typedef BGKdynamics<T,DESCRIPTOR> BulkDynamics;
 #endif
 
 //Physical Settings
-const T tau = 0.505;
+const T tau = 0.53;
 const T nuP = 0.02; // Physical Nu
 const T nuL = (tau - nuP) / 3; // Lattice Nu (LU)
 const T rhoP = 998.2; // Physical Density (kg/m3)
 
 // Sim Resolution Determination
-int N = 25;                         
+int N = 20;                         
 const T charMinL =0.005; // m       
 const T deltaX = charMinL / N; // LU 
 const T deltaT = (nuL * deltaX * deltaX) / nuP; // s
@@ -40,7 +41,7 @@ const T fluidMaxPhysT = T( 5 );     // max. fluid simulation time in s, SI unit
 const T particleMaxPhysT = T( 20 ); // max. particle simulation time in s, SI unit  
 
 // Average Velocity Determination
-const T flowRate = 2.; // mL/s
+const T flowRate = 2. * 1.0e-6; // mL/s
 const T radInlet = 0.005; // m
 const T avgVel = flowRate / (M_PI * radInlet* radInlet); // m/s
 const T avgLVel = (avgVel*deltaT) / deltaX; // LU
