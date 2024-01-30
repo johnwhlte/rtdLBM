@@ -1,4 +1,4 @@
-tmp/
+tmp/*
 *.csv
 *.d
 *.o
