@@ -1,0 +1,73 @@
+[MpiManager] Sucessfully initialized, numThreads=4
+[ThreadPool] Sucessfully initialized, numThreads=1
+[UnitConverter] ----------------- UnitConverter information -----------------
+[UnitConverter] -- Parameters:
+[UnitConverter] Resolution:                       N=              25
+[UnitConverter] Lattice velocity:                 latticeU=       0.424413
+[UnitConverter] Lattice relaxation frequency:     omega=          1.9802
+[UnitConverter] Lattice relaxation time:          tau=            0.505
+[UnitConverter] Characteristical length(m):       charL=          0.005
+[UnitConverter] Characteristical speed(m/s):      charU=          25464.8
+[UnitConverter] Phys. kinematic viscosity(m^2/s): charNu=         0.02
+[UnitConverter] Phys. density(kg/m^d):            charRho=        998.2
+[UnitConverter] Characteristical pressure(N/m^2): charPressure=   0
+[UnitConverter] Mach number:                      machNumber=     0.735105
+[UnitConverter] Reynolds number:                  reynoldsNumber= 6366.2
+[UnitConverter] Knudsen number:                   knudsenNumber=  0.00011547
+[UnitConverter] 
+[UnitConverter] -- Conversion factors:
+[UnitConverter] Voxel length(m):                  physDeltaX=     0.0002
+[UnitConverter] Time step(s):                     physDeltaT=     3.33333e-09
+[UnitConverter] Velocity factor(m/s):             physVelocity=   60000
+[UnitConverter] Density factor(kg/m^3):           physDensity=    998.2
+[UnitConverter] Mass factor(kg):                  physMass=       7.9856e-09
+[UnitConverter] Viscosity factor(m^2/s):          physViscosity=  12
+[UnitConverter] Force factor(N):                  physForce=      143741
+[UnitConverter] Pressure factor(N/m^2):           physPressure=   3.59352e+12
+[UnitConverter] -------------------------------------------------------------
+[STLreader] Voxelizing ...
+[STLmesh] nTriangles=182680; maxDist2=1.91544e-08
+[STLmesh] minPhysR(StlMesh)=(-1.11017e-18,-0.00499994,-0.005); maxPhysR(StlMesh)=(0.02,0.00499998,0.005)
+[Octree] radius=0.0128; center=(0.00995,-4.99767e-05,-5e-05)
+[STLreader] voxelSize=0.0002; stlSize=0.001
+[STLreader] minPhysR(VoxelMesh)=(5e-05,-0.00494998,-0.00495); maxPhysR(VoxelMesh)=(0.01985,0.00485002,0.00485)
+[STLreader] Voxelizing ... OK
+[prepareGeometry] Prepare Geometry ...
+[SuperGeometry3D] cleaned 0 outer boundary voxel(s)
+[SuperGeometry3D] cleaned 0 outer boundary voxel(s)
+[SuperGeometry3D] cleaned 0 inner boundary voxel(s) of Type 3
+[SuperGeometryStatistics3D] updated
+[SuperGeometry3D] the model is correct!
+[CuboidGeometry3D] ---Cuboid Stucture Statistics---
+[CuboidGeometry3D]  Number of Cuboids: 	32
+[CuboidGeometry3D]  Delta  (min): 		0.0002
+[CuboidGeometry3D]         (max): 		0.0002
+[CuboidGeometry3D]  Ratio  (min): 		0.5
+[CuboidGeometry3D]         (max): 		2
+[CuboidGeometry3D]  Nodes  (min): 		7150
+[CuboidGeometry3D]         (max): 		8788
+[CuboidGeometry3D]  Weight (min): 		5175
+[CuboidGeometry3D]         (max): 		8225
+[CuboidGeometry3D] --------------------------------
+[SuperGeometryStatistics3D] materialNumber=0; count=46120; minPhysR=(-0.00015,-0.00514998,-0.00515); maxPhysR=(0.02005,0.00505002,0.00505)
+[SuperGeometryStatistics3D] materialNumber=1; count=196500; minPhysR=(5e-05,-0.00494998,-0.00495); maxPhysR=(0.01985,0.00485002,0.00485)
+[SuperGeometryStatistics3D] materialNumber=2; count=20946; minPhysR=(-0.00015,-0.00514998,-0.00515); maxPhysR=(0.02005,0.00505002,0.00505)
+[SuperGeometryStatistics3D] materialNumber=3; count=1955; minPhysR=(-0.00015,-0.00494998,-0.00495); maxPhysR=(-0.00015,0.00485002,0.00485)
+[SuperGeometryStatistics3D] materialNumber=4; count=1837; minPhysR=(0.02005,-0.00494998,-0.00455); maxPhysR=(0.02005,0.00445002,0.00485)
+[prepareGeometry] Prepare Geometry ... OK
+[prepareLattice] Prepare Lattice ...
+[prepareLattice] Prepare Lattice ... OK
+[Timer] 
+[Timer] ----------------Summary:Timer----------------
+[Timer] measured time (rt) : 0.44s
+[Timer] measured time (cpu): 0.045s
+[Timer] ---------------------------------------------
+[main] starting simulation...
+[setBoundaryValues] step=0; maxVel=0
+[Timer] step=0; percent=0; passedTime=0.047; remTime=7.05e+07; MLUPs=0
+[getResults] 1.49167e-154
+[LatticeStatistics] step=0; t=0; uMax=1.49167e-154; avEnergy=0; avRho=1
+[SuperPlaneIntegralFluxVelocity3D] regionName=inflow; regionSize[m^2]=7.424e-05; volumetricFlowRate[ml/s]=0; meanVelocity[m/s]=0
+[SuperPlaneIntegralFluxPressure3D] regionName=inflow; regionSize[m^2]=7.424e-05; force[N]=0; meanPressure[mmHg]=0
+[SuperPlaneIntegralFluxVelocity3D] regionName=outflow; regionSize[m^2]=6.968e-05; volumetricFlowRate[ml/s]=0; meanVelocity[m/s]=0
+[SuperPlaneIntegralFluxPressure3D] regionName=outflow; regionSize[m^2]=6.968e-05; force[N]=0; meanPressure[mmHg]=0

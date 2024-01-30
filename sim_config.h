@@ -15,6 +15,7 @@ using namespace particles::io;
 using T = FLOATING_POINT_TYPE;
 typedef D3Q19<> DESCRIPTOR;
 typedef SubgridParticle3D PARTICLETYPE;
+typedef BGKdynamics<T,DESCRIPTOR> BulkDynamics;
 
 #define BOUZIDI
 
@@ -23,15 +24,16 @@ typedef SubgridParticle3D PARTICLETYPE;
 #endif
 
 //Physical Settings
-const T tau = 0.51;
-const T nuP = 0.002; // Physical Nu
+const T tau = 0.505;
+const T nuP = 0.02; // Physical Nu
 const T nuL = (tau - nuP) / 3; // Lattice Nu (LU)
+const T rhoP = 998.2; // Physical Density (kg/m3)
 
 // Sim Resolution Determination
-int N = 40;                         
-const T charMinL =0.001; // m       
+int N = 25;                         
+const T charMinL =0.005; // m       
 const T deltaX = charMinL / N; // LU 
-const T deltaT = (nuL * pow(deltaX,2)) / nuP; // s
+const T deltaT = (nuL * deltaX * deltaX) / nuP; // s
 
 // Sim Time Settings
 const T fluidMaxPhysT = T( 5 );     // max. fluid simulation time in s, SI unit
@@ -40,7 +42,7 @@ const T particleMaxPhysT = T( 20 ); // max. particle simulation time in s, SI un
 // Average Velocity Determination
 const T flowRate = 2.; // mL/s
 const T radInlet = 0.005; // m
-const T avgVel = flowRate / (M_PI * pow(radInlet,2)); // m/s
+const T avgVel = flowRate / (M_PI * radInlet* radInlet); // m/s
 const T avgLVel = (avgVel*deltaT) / deltaX; // LU
 
 // Particle Settings
@@ -62,3 +64,8 @@ Vector<T, 3> outletCenter( 0.020, -0.000386, 0.000322 );
 // normals of inflow and outflow regions
 Vector<T, 3> inletNormal(T(-1), T(0), T(0) );
 Vector<T, 3> outletNormal( T(1), T(0), T(0) );
+
+//writing data constants
+char vtkFileName[] = "rtdVal";
+const T physVTKiter = 0.1;
+const T physStatiter = 0.01;

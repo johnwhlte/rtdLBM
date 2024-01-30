@@ -31,10 +31,10 @@ a previously run RTD in Ansys Fluent.
 
 
 
-void prepareGeometry(IndicatorF3D<T>& indicator,
-                        STLreader<T>& stlReader,
-                        SuperGeometry<T,3>& superGeometry,
-                        UnitConverter<T, DESCRIPTOR> const& converter)
+void prepareGeometry(UnitConverter<T,DESCRIPTOR> const& converter, 
+                      IndicatorF3D<T>& indicator,
+                      STLreader<T>& stlReader, 
+                      SuperGeometry<T,3>& superGeometry)
 {
     OstreamManager clout( std::cout,"prepareGeometry" );
     clout << "Prepare Geometry ..." << std::endl;
@@ -138,17 +138,186 @@ void prepareParticles( UnitConverter<T,DESCRIPTOR> const& converter,
   clout << "Prepare Particles ... OK" << std::endl;
 }
 
-void setBoundaryValues()
+void setBoundaryValues(SuperLattice<T,DESCRIPTOR>& sLattice,
+                        UnitConverter<T,DESCRIPTOR> const& converter, int iT,
+                        SuperGeometry<T,3>& superGeometry )
 {
+    OstreamManager clout( std::cout,"setBoundaryValues" );
+
+    // No of time steps for smooth start-up
+    const int iTmaxStart = converter.getLatticeTime( fluidMaxPhysT*0.2 );
+    const int iTupdate = converter.getLatticeTime( 0.01 );
+
+    if ( iT%iTupdate==0 && iT<= iTmaxStart ) {
+        sLattice.setProcessingContext(ProcessingContext::Evaluation);
+
+        // Smooth start curve, sinus
+        // SinusStartScale<T,int> StartScale(iTmaxStart, T(1));
+
+        // Smooth start curve, polynomial
+        PolynomialStartScale<T,int> startScale( iTmaxStart, T( 1 ) );
+
+        // Creates and sets the Poiseuille inflow profile using functors
+        int iTvec[1]= {iT};
+        T frac[1]= {};
+        startScale( frac,iTvec );
+        std::vector<T> maxVelocity( 3,0 );
+        maxVelocity[0] = frac[0]*converter.getLatticeVelocity(avgVel);
+
+        T distance2Wall = converter.getConversionFactorLength()/2.;
+        CirclePoiseuille3D<T> poiseuilleU( superGeometry, 3, maxVelocity[0], distance2Wall );
+        sLattice.defineU( superGeometry, 3, poiseuilleU );
+        sLattice.setProcessingContext<Array<momenta::FixedVelocityMomentumGeneric::VELOCITY>>(
+        ProcessingContext::Simulation);
+
+        if ( iT % (10*iTupdate) == 0 && iT <= iTmaxStart ) {
+        clout << "step=" << iT << "; maxVel=" << maxVelocity[0] << std::endl;
+        }
+
+        sLattice.setProcessingContext(ProcessingContext::Simulation);
+    }
 
 }
 
-bool getResults()
+bool getResults(SuperLattice<T, DESCRIPTOR>& sLattice,
+                 UnitConverter<T,DESCRIPTOR>& converter, int iT,
+                 SuperGeometry<T,3>& superGeometry, util::Timer<T>& timer, STLreader<T>& stlReader )
 {
+  OstreamManager clout( std::cout, "getResults" );
+  const int vtkIter  = converter.getLatticeTime( physVTKiter );
+  const int statIter = converter.getLatticeTime( physStatiter );
+
+  if ( iT==0 ) {
+    SuperVTMwriter3D<T> vtmWriter(vtkFileName);
+
+    // Writes the geometry, cuboid no. and rank no. as vti file for visualization
+    SuperLatticeGeometry3D<T, DESCRIPTOR> geometry( sLattice, superGeometry );
+    SuperLatticeCuboid3D<T, DESCRIPTOR> cuboid( sLattice );
+    SuperLatticeRank3D<T, DESCRIPTOR> rank( sLattice );
+    vtmWriter.write( geometry );
+    vtmWriter.write( cuboid );
+    vtmWriter.write( rank );
+
+    vtmWriter.createMasterFile();
+  }
+  // Writes output to vtk files for viewing in Paraview
+  if ( iT%vtkIter==0 ) {
+    sLattice.setProcessingContext(ProcessingContext::Evaluation);
+    sLattice.scheduleBackgroundOutputVTK([&,iT](auto task) {
+      SuperVTMwriter3D<T> vtmWriter(vtkFileName);
+      SuperLatticePhysVelocity3D velocity(sLattice, converter);
+      SuperLatticePhysPressure3D pressure(sLattice, converter);
+      vtmWriter.addFunctor(velocity);
+      vtmWriter.addFunctor(pressure);
+      task(vtmWriter, iT);
+    });
+  }
+  // Writes output on the console
+  if ( iT%statIter==0 ) {
+    // Timer console output
+    timer.update( iT );
+    timer.printStep();
+
+    clout << sLattice.getStatistics().getMaxU() << std::endl;
+    // Lattice statistics console output
+    sLattice.getStatistics().print( iT,converter.getPhysTime( iT ) );
+
+    // Flux at the inflow and outflow region
+    std::vector<int> materials = { 1, 3, 4};
+
+    IndicatorCircle3D<T> inflow(inletCenter[0], inletCenter[1]-2.*converter.getConversionFactorLength(), inletCenter[2], inletNormal[0], inletNormal[1], inletNormal[2], radInlet+2.*converter.getConversionFactorLength() );
+    SuperPlaneIntegralFluxVelocity3D<T> vFluxInflow( sLattice, converter, superGeometry, inflow, materials, BlockDataReductionMode::Discrete );
+    vFluxInflow.print( "inflow","ml/s" );
+    SuperPlaneIntegralFluxPressure3D<T> pFluxInflow( sLattice, converter, superGeometry, inflow, materials, BlockDataReductionMode::Discrete );
+    pFluxInflow.print( "inflow","N","mmHg" );
+
+    IndicatorCircle3D<T> outflow(outletCenter[0], outletCenter[1]+2.*converter.getConversionFactorLength(), outletCenter[2],  outletNormal[0], outletNormal[1], outletNormal[2], radInlet+2.*converter.getConversionFactorLength() );
+    SuperPlaneIntegralFluxVelocity3D<T> vFluxOutflow( sLattice, converter, superGeometry, outflow, materials, BlockDataReductionMode::Discrete );
+    vFluxOutflow.print( "outflow","ml/s" );
+    SuperPlaneIntegralFluxPressure3D<T> pFluxOutflow( sLattice, converter, superGeometry, outflow, materials, BlockDataReductionMode::Discrete );
+    pFluxOutflow.print( "outflow","N","mmHg" );
+  }
+
+
+  if ( sLattice.getStatistics().getMaxU() > 0.7 ) {
+    clout << "PROBLEM uMax=" << sLattice.getStatistics().getMaxU() << std::endl;
+    std::exit(0);
+  }
     return true;
 }
 
 int main( int argc, char* argv[] )
 {
+    // === 1st Step: Initialization ===
+  olbInit( &argc, &argv );
+  singleton::directories().setOutputDir( "./tmp/" );
+  OstreamManager clout( std::cout,"main" );
+  // display messages from every single mpi process
+  //clout.setMultiOutput(true);
+
+  UnitConverterFromResolutionAndRelaxationTime<T,DESCRIPTOR> converter(
+    (T) N,            // Number of lattice cells across the char length defined below
+    (T) tau,          // relaxation time tau
+    (T) charMinL,     // charPhysLength: reference length of simulation geometry
+    (T) avgVel,    // charPhysVelocity: maximal/highest expected velocity during simulation in __m / s__
+    (T) nuP,          // physViscosity: physical kinematic viscosity in __m^2 / s__
+    (T) rhoP          // physDensity: physical density in __kg / m^3__
+  );
+  // Prints the converter log as console output
+  converter.print();
+  // Writes the converter log in a file
+  converter.write(vtkFileName);
+
+  // === 2nd Step: Prepare Geometry ===
+
+  // Instantiation of the STLreader class
+  // file name, voxel size in meter, stl unit in meter, outer voxel no., inner voxel no.
+  STLreader<T> stlReader( "myCylinder.stl", converter.getConversionFactorLength(), 0.001, 0, true );
+  IndicatorLayer3D<T> extendedDomain( stlReader, converter.getConversionFactorLength() );
+
+  // Instantiation of a cuboidGeometry with weights
+#ifdef PARALLEL_MODE_MPI
+  const int noOfCuboids = util::min(16*N, 8*singleton::mpi().getSize());
+#else
+  const int noOfCuboids = 2;
+#endif
+  CuboidGeometry3D<T> cuboidGeometry( extendedDomain, converter.getConversionFactorLength(), noOfCuboids, "volume" );
+  // Instantiation of a loadBalancer
+  HeuristicLoadBalancer<T> loadBalancer( cuboidGeometry );
+
+  // Instantiation of a superGeometry
+  SuperGeometry<T,3> superGeometry( cuboidGeometry, loadBalancer );
+
+  prepareGeometry( converter, extendedDomain, stlReader, superGeometry );
+
+  // === 3rd Step: Prepare Lattice ===
+  SuperLattice<T, DESCRIPTOR> sLattice( superGeometry );
+
+  util::Timer<T> timer1( converter.getLatticeTime( fluidMaxPhysT ), superGeometry.getStatistics().getNvoxel() );
+  timer1.start();
+
+  prepareLattice( sLattice, converter, stlReader, superGeometry );
+
+  timer1.stop();
+  timer1.printSummary();
+
+  // // === 4th Step: Main Loop with Timer ===
+  clout << "starting simulation..." << std::endl;
+  util::Timer<T> timer( converter.getLatticeTime( fluidMaxPhysT ), superGeometry.getStatistics().getNvoxel() );
+  timer.start();
+
+  for ( std::size_t iT = 0; iT <= converter.getLatticeTime( fluidMaxPhysT ); iT++ ) {
+  //   // === 5th Step: Definition of Initial and Boundary Conditions ===
+     setBoundaryValues( sLattice, converter, iT, superGeometry );
+
+  //   // === 6th Step: Collide and Stream Execution ===
+     sLattice.collideAndStream();
+
+  //   // === 7th Step: Computation and Output of the Results ===
+     getResults( sLattice, converter, iT, superGeometry, timer, stlReader );
+   }
+
+   timer.stop();
+   timer.printSummary();
     return 0;
 }
