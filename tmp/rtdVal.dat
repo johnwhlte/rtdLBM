@@ -1,25 +1,25 @@
 ----------------- UnitConverter information -----------------
 -- Parameters:
-Resolution:                       N=              20
-Lattice velocity:                 latticeU=       0.423649
-Lattice relaxation frequency:     omega=          1.92308
-Lattice relaxation time:          tau=            0.52
+Resolution:                       N=              25
+Lattice velocity:                 latticeU=       0.0016946
+Lattice relaxation frequency:     omega=          1.96078
+Lattice relaxation time:          tau=            0.51
 Characteristical length(m):       charL=          0.005
-Characteristical speed(m/s):      charU=          5.09296
+Characteristical speed(m/s):      charU=          0.0509296
 Phys. kinematic viscosity(m^2/s): charNu=         2.00361e-05
 Phys. density(kg/m^d):            charRho=        998.2
 Characteristical pressure(N/m^2): charPressure=   0
-Mach number:                      machNumber=     0.733782
-Reynolds number:                  reynoldsNumber= 1270.95
-Knudsen number:                   knudsenNumber=  0.00057735
+Mach number:                      machNumber=     0.00293513
+Reynolds number:                  reynoldsNumber= 12.7095
+Knudsen number:                   knudsenNumber=  0.00023094
 
 -- Conversion factors:
-Voxel length(m):                  physDeltaX=     0.00025
-Time step(s):                     physDeltaT=     2.07958e-05
-Velocity factor(m/s):             physVelocity=   12.0216
+Voxel length(m):                  physDeltaX=     0.0002
+Time step(s):                     physDeltaT=     6.65467e-06
+Velocity factor(m/s):             physVelocity=   30.0541
 Density factor(kg/m^3):           physDensity=    998.2
-Mass factor(kg):                  physMass=       1.55969e-08
-Viscosity factor(m^2/s):          physViscosity=  0.00300541
-Force factor(N):                  physForce=      0.00901623
-Pressure factor(N/m^2):           physPressure=   144260
+Mass factor(kg):                  physMass=       7.9856e-09
+Viscosity factor(m^2/s):          physViscosity=  0.00601082
+Force factor(N):                  physForce=      0.0360649
+Pressure factor(N/m^2):           physPressure=   901623
 -------------------------------------------------------------

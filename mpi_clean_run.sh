@@ -3,5 +3,5 @@
 NUM_PROCS=4
 
 make clean
-make -j 6
+make -j 4
 mpirun -np $NUM_PROCS rtdVal > run_log

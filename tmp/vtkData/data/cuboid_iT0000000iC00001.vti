@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <VTKFile type="ImageData" version="0.1" byte_order="LittleEndian" compressor="vtkZLibDataCompressor">
-<ImageData WholeExtent="-1 10 -1 21 -1 21" Origin="0.0025625 -0.00518748 -0.0051875" Spacing="0.00025 0.00025 0.00025">
-<Piece Extent="-1 10 -1 21 -1 21">
+<ImageData WholeExtent="-1 13 -1 26 -1 26" Origin="0.00245 -0.00514998 -0.00515" Spacing="0.0002 0.0002 0.0002">
+<Piece Extent="-1 13 -1 26 -1 26">
 <PointData>
 <DataArray type="Float32" Name="cuboid" NumberOfComponents="2" format="binary" encoding="base64">
-AQAAAGDGAABgxgAAagAAAA==eJztxTERADAIBLB3RlfMoBkp9cElS5K8na7Ytm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3btm3b9rE/7Gq8hg==
+AQAAAIBvAQCAbwEAqQAAAA==eJztxTEBADAIA7A6YyeGsYCu2eBIniR5O12xbdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu2bdu27eN/pdi96g==
 </DataArray>
 </PointData>
 </Piece>

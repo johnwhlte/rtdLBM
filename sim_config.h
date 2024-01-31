@@ -25,7 +25,7 @@ typedef BGKdynamics<T,DESCRIPTOR> BulkDynamics;
 #endif
 
 //Physical Settings
-const T tau = 0.52;
+const T tau = 0.51;
 const T rhoP = 998.2; // Physical Density (kg/m3)
 const T muP = 0.02;
 const T nuP = muP / rhoP; // Physical Nu
@@ -33,27 +33,29 @@ const T nuL = (tau - nuP) / 3; // Lattice Nu (LU)
 
 
 // Sim Resolution Determination
-const int N = 20;                         
+const int N = 25;                         
 const T charMinL =0.005; // m       
 const T deltaX = charMinL / N; // LU 
 const T deltaT = (nuL * deltaX * deltaX) / nuP; // s
-const T maxAllowableLatticeVel = 0.5;
+const T maxAllowableLatticeVel = 0.4;
 
 // Sim Time Settings
-const T fluidMaxPhysT = T( 5 );     // max. fluid simulation time in s, SI unit
-const T particleMaxPhysT = T( 20 ); // max. particle simulation time in s, SI unit  
+const T fluidMaxPhysT = T( 1 );     // max. fluid simulation time in s, SI unit
+const T particleMaxPhysT = T( 5 ); // max. particle simulation time in s, SI unit  
 
 // Average Velocity Determination
-const T flowRate = 2. * 1.0e-4; // m3/s
-const T radInlet = 0.0025; // m
+const T flowRate = 2. * 1.0e-6; // m3/s
+const T radInlet = 0.005; // m
 const T avgVel = flowRate / (M_PI * radInlet* radInlet); // m/s
 const T avgLVel = (avgVel*deltaT) / deltaX; // LU
 
 // Particle Settings
-std::size_t noOfParticles = 10000;   // total number of inserted particles   
-const T radius = 1.5e-4;            // particles radius
+std::size_t noOfParticles = 1000;   // total number of inserted particles   
+const T radius = 7.5e-5;            // particles radius
 const T partRho = 998.2; 
-const T particleInjectionX = 0.001;
+const T particleInjectionX = 0.005;
+const T injectionRadius = 3.0; // LU away from the wall
+const T injectionP = 0.1; // LU into the geometry
 
 //Set capture method:
 // materialCapture: based on material number

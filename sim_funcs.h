@@ -94,9 +94,10 @@ void prepareParticles( UnitConverter<T,DESCRIPTOR> const& converter,
   Vector<T, 3> c( inletCenter );
   c[0] = particleInjectionX;
   IndicatorCircle3D<T> inflowCircle( c, inletNormal, radInlet -
-                                     converter.getConversionFactorLength() * 0.1 );
-  IndicatorCylinder3D<T> inletCylinder( inflowCircle, 0.01 *
+                                     converter.getConversionFactorLength() * injectionRadius);
+  IndicatorCylinder3D<T> inletCylinder( inflowCircle, injectionP *
                                         converter.getConversionFactorLength() );
+
 
   //Add particles
   addParticles( superParticleSystem, inletCylinder, partRho, radius, noOfParticles, randomizer );
@@ -130,7 +131,7 @@ void setBoundaryValues(SuperLattice<T,DESCRIPTOR>& sLattice,
         T frac[1]= {};
         startScale( frac,iTvec );
         std::vector<T> maxVelocity( 3,0 );
-        maxVelocity[0] = frac[0]*converter.getLatticeVelocity(avgVel);
+        maxVelocity[0] = 2.*frac[0]*converter.getLatticeVelocity(avgVel);
 
         T distance2Wall = converter.getConversionFactorLength()/2.;
         CirclePoiseuille3D<T> poiseuilleU( superGeometry, 3, maxVelocity[0], distance2Wall );
