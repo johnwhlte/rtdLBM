@@ -50,18 +50,18 @@ const T avgVel = flowRate / (M_PI * radInlet* radInlet); // m/s
 const T avgLVel = (avgVel*deltaT) / deltaX; // LU
 
 // Particle Settings
-std::size_t noOfParticles = 2000;   // total number of inserted particles   
+std::size_t noOfParticles = 30000;   // total number of inserted particles   
 const T radius = 7.5e-5;            // particles radius
 const T partRho = 998.2; 
-const T particleInjectionX = 0.001;
-const T injectionRadius = 3.0; // LU away from the wall
-const T injectionP = 0.1; // LU into the geometry
+const T particleInjectionX = 0.0002;
+const T injectionRadius = 1.0; // LU away from the wall
+const T injectionP = 0.1; // LU, length of the injection cylinder (must be cylinder because 3D, small to make it like a surface)
 
 //Set capture method:
 // materialCapture: based on material number
 // wallCapture:     based on more accurate stl description
 typedef enum {materialCapture, wallCapture} ParticleDynamicsSetup;
-const ParticleDynamicsSetup particleDynamicsSetup = wallCapture;
+const ParticleDynamicsSetup particleDynamicsSetup = materialCapture;
 
 // center of inflow and outflow regions [m]
 Vector<T, 3> inletCenter( 0.000, 0.000019, 0.000025 );
@@ -76,4 +76,4 @@ Vector<T, 3> outletNormal( T(1), T(0), T(0) );
 char vtkFileName[] = "rtdVal";
 char vtkParticleFileName[] = "particle";
 const T physVTKiter = 0.1;
-const T physStatiter = 0.0005;
+const T physStatiter = 0.001;

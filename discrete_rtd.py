@@ -1,8 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-num_particles = 2000
-deltaT = 0.0005
+num_particles = 20000
+deltaT = 0.001
 data_file = "run_log"
 
 with open(data_file,"r") as f:
@@ -16,7 +16,6 @@ for line in lines:
 
     if line_split[0] == '[captureStatistics]' and len(line_split) == 4:
         stats_line.append(int(line_split[3].split('=')[1]))
-        print(line_split)
 
 e_t = np.zeros(shape=np.asarray(stats_line).shape)
 
@@ -31,7 +30,7 @@ t = np.arange(0, deltaT*len(e_t), deltaT)
 
 print(f"Area under the E curve  -- > {np.sum(e_t*deltaT)}")
 print(f"Mean Residence Time  -- > {np.mean(e_t)}")
-print(f"Space time (V/Q)  -- > {1000000*0.020*(np.pi*(0.005**2)) / 1.985}")
+print(f"Space time (V/Q)  -- > {1000000*0.019*(np.pi*(0.0038**2)) / 1.985}")
 
 plt.plot(t, e_t)
 plt.savefig("test.png")   

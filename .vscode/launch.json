@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/john/rocm_remote/validationRTD",
-      "program": "/home/john/rocm_remote/validationRTD/build/Debug/outDebug",
+      "cwd": "/home/john/sys_remote/examples/myExamples/rtdLBM",
+      "program": "/home/john/sys_remote/examples/myExamples/rtdLBM/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

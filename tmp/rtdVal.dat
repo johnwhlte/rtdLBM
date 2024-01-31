@@ -15,11 +15,11 @@ Knudsen number:                   knudsenNumber=  0.00019245
 
 -- Conversion factors:
 Voxel length(m):                  physDeltaX=     0.000166667
-Time step(s):                     physDeltaT=     4.6213e-06
-Velocity factor(m/s):             physVelocity=   36.0649
+Time step(s):                     physDeltaT=     4.62129e-06
+Velocity factor(m/s):             physVelocity=   36.065
 Density factor(kg/m^3):           physDensity=    998.2
 Mass factor(kg):                  physMass=       4.6213e-09
-Viscosity factor(m^2/s):          physViscosity=  0.00601082
-Force factor(N):                  physForce=      0.0360649
+Viscosity factor(m^2/s):          physViscosity=  0.00601083
+Force factor(N):                  physForce=      0.036065
 Pressure factor(N/m^2):           physPressure=   1.29834e+06
 -------------------------------------------------------------

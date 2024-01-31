@@ -90,7 +90,7 @@ int main( int argc, char* argv[] )
 
   SuperParticleSystem<T,PARTICLETYPE> superParticleSystem(superGeometry);
 
-  std::vector<int> materials {2,4};
+  std::vector<int> materials {4};
   SuperIndicatorMaterial<T,3> materialIndicator (superGeometry, materials);
 
   ParticleManager<T,DESCRIPTOR,PARTICLETYPE> particleManager(
