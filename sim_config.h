@@ -41,7 +41,7 @@ const T maxAllowableLatticeVel = 0.4;
 
 // Sim Time Settings
 const T fluidMaxPhysT = T( 1 );     // max. fluid simulation time in s, SI unit
-const T particleMaxPhysT = T( 5 ); // max. particle simulation time in s, SI unit  
+const T particleMaxPhysT = T( 10 ); // max. particle simulation time in s, SI unit  
 
 // Average Velocity Determination
 const T flowRate = 2. * 1.0e-6; // m3/s
@@ -50,10 +50,10 @@ const T avgVel = flowRate / (M_PI * radInlet* radInlet); // m/s
 const T avgLVel = (avgVel*deltaT) / deltaX; // LU
 
 // Particle Settings
-std::size_t noOfParticles = 1000;   // total number of inserted particles   
+std::size_t noOfParticles = 2000;   // total number of inserted particles   
 const T radius = 7.5e-5;            // particles radius
 const T partRho = 998.2; 
-const T particleInjectionX = 0.005;
+const T particleInjectionX = 0.001;
 const T injectionRadius = 3.0; // LU away from the wall
 const T injectionP = 0.1; // LU into the geometry
 
@@ -76,4 +76,4 @@ Vector<T, 3> outletNormal( T(1), T(0), T(0) );
 char vtkFileName[] = "rtdVal";
 char vtkParticleFileName[] = "particle";
 const T physVTKiter = 0.1;
-const T physStatiter = 0.01;
+const T physStatiter = 0.002;
