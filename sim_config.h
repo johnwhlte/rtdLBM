@@ -33,7 +33,7 @@ const T nuL = (tau - nuP) / 3; // Lattice Nu (LU)
 
 
 // Sim Resolution Determination
-const int N = 25;                         
+const int N = 30;                         
 const T charMinL =0.005; // m       
 const T deltaX = charMinL / N; // LU 
 const T deltaT = (nuL * deltaX * deltaX) / nuP; // s
@@ -76,4 +76,4 @@ Vector<T, 3> outletNormal( T(1), T(0), T(0) );
 char vtkFileName[] = "rtdVal";
 char vtkParticleFileName[] = "particle";
 const T physVTKiter = 0.1;
-const T physStatiter = 0.002;
+const T physStatiter = 0.0005;

@@ -3,3 +3,4 @@ tmp/*
 *.d
 *.o
 run_log
+*.png

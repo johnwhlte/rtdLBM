@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <VTKFile type="ImageData" version="0.1" byte_order="LittleEndian" compressor="vtkZLibDataCompressor">
-<ImageData WholeExtent="-1 13 -1 26 -1 26" Origin="0.00245 -0.00514998 -0.00515" Spacing="0.0002 0.0002 0.0002">
-<Piece Extent="-1 13 -1 26 -1 26">
+<ImageData WholeExtent="-1 15 -1 31 -1 31" Origin="0.00254167 -0.00512498 -0.005125" Spacing="0.000166667 0.000166667 0.000166667">
+<Piece Extent="-1 15 -1 31 -1 31">
 <PointData>
 <DataArray type="Float32" Name="rank" NumberOfComponents="1" format="binary" encoding="base64">
-AQAAAMC3AADAtwAASAAAAA==eJztw0ENAAAMA6GTNv+qZqJPSKguVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVHX+RnXym
+AQAAAEQhAQBEIQEAYQAAAA==eJztwwENAAAMw6A6m7VLvxFIqFuqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqquoey+j3iw==
 </DataArray>
 </PointData>
 </Piece>

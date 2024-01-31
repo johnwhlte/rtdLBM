@@ -157,8 +157,11 @@ bool getResults(SuperLattice<T, DESCRIPTOR>& sLattice,
   const int vtkIter  = converter.getLatticeTime( physVTKiter );
   const int statIter = converter.getLatticeTime( physStatiter );
 
+  SuperVTMwriter3D<T> vtmWriter(vtkFileName);
+  VTUwriter<T,PARTICLETYPE,true> superParticleWriter(vtkParticleFileName,false,false);
+
   if ( iT==0 ) {
-    SuperVTMwriter3D<T> vtmWriter(vtkFileName);
+    
 
     // Writes the geometry, cuboid no. and rank no. as vti file for visualization
     SuperLatticeGeometry3D<T, DESCRIPTOR> geometry( sLattice, superGeometry );
@@ -169,11 +172,11 @@ bool getResults(SuperLattice<T, DESCRIPTOR>& sLattice,
     vtmWriter.write( rank );
 
     vtmWriter.createMasterFile();
+    superParticleWriter.createMasterFile();
     
     
   }
-  VTUwriter<T,PARTICLETYPE,true> superParticleWriter(vtkParticleFileName,false,false);
-  superParticleWriter.createMasterFile();
+  
   // Writes output to vtk files for viewing in Paraview
   if ( iT%vtkIter==0 && iT <= converter.getLatticeTime(fluidMaxPhysT) ) {
     sLattice.setProcessingContext(ProcessingContext::Evaluation);
